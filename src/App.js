@@ -1,6 +1,9 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import * as ROUTES from './constants/Routes';
+import { useDispatch } from 'react-redux';
+import { setUser } from './context/user';
+import useAuthListener from './hooks/use_auth_listener';
 
 
 const Login = lazy(() => import('./pages/Login'));
@@ -9,6 +12,12 @@ const Dashboard = lazy(() => import('./pages/Dashboard'));
 const Profile = lazy(() => import('./pages/Profile'));
 
 function App() {
+  const { user } = useAuthListener();
+  const dispatch = useDispatch();
+  useEffect(()=> {
+    console.log(user);
+    dispatch(setUser(user));
+  },[user]);
   return (
     <div className="App">
       {/* <header className="App-header"> */}

@@ -16,10 +16,10 @@ const firebaseConfig = {
   measurementId: "G-3ZXKGGKG6T"
 };
 
-const firebase = Firebase.initializeApp(firebaseConfig);
+const firebaseApp = Firebase.initializeApp(firebaseConfig);
 const { FieldValue } = Firebase.firestore;
 // create firebase storage
 const FirebaseStorage = Firebase.storage();
 // seedDatabase(firebase);
 const analytic = Firebase.analytics();
-export { firebase, FieldValue, FirebaseStorage, analytic };
+export { firebaseApp, FieldValue, FirebaseStorage, analytic };
