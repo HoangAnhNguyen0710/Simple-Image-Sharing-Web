@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import FirebaseContext from '../context/firebase';
-import * as ROUTES from '../constants/routes';
+import { Link, useNavigate } from 'react-router-dom';
+import { firebaseApp } from '../config/firebase' ;
+// import "firebase/auth";
+import * as ROUTES from '../constants/Routes';
+import useAuthListener from '../hooks/use_auth_listener';
 
 export default function Login() {
-  const history = useHistory();
-  const { firebase } = useContext(FirebaseContext);
+  const navigate = useNavigate();
+//   const { firebase } = useContext(FirebaseContext);
 
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
@@ -13,12 +15,14 @@ export default function Login() {
   const [error, setError] = useState('');
   const isInvalid = password === '' || emailAddress === '';
 
+  const { user } = useAuthListener();
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
     try {
-      await firebase.auth().signInWithEmailAndPassword(emailAddress, password);
-      history.push(ROUTES.DASHBOARD);
+      await firebaseApp.auth().signInWithEmailAndPassword(emailAddress, password);
+      navigate(ROUTES.DASHBOARD);
     } catch (error) {
       setEmailAddress('');
       setPassword('');
@@ -27,18 +31,18 @@ export default function Login() {
   };
 
   useEffect(() => {
-    document.title = 'Login - Instagram';
+    document.title = 'Login - Simple Image Sharing';
+    if(user) {
+      navigate(ROUTES.DASHBOARD);
+    }
   }, []);
 
   return (
     <div className="container flex flex-col lg:flex-row mx-auto max-w-screen-md items-center h-screen px-4 lg:px-0">
-      <div className="hidden lg:flex w-5/5 lg:w-3/5">
-        <img src="/images/iphone-with-profile.jpg" alt="iPhone with Instagram app" />
-      </div>
       <div className="flex flex-col w-full lg:w-2/5 justify-center h-full max-w-md m-auto">
         <div className="flex flex-col items-center bg-white p-4 border border-gray-primary mb-4 rounded">
-          <h1 className="flex justify-center w-full">
-            <img src="/images/logo.png" alt="Instagram" className="mt-2 mb-4" />
+          <h1 className="flex justify-center w-full py-6 uppercase font-medium">
+            Simple Image Sharing
           </h1>
 
           {error && (
@@ -67,7 +71,7 @@ export default function Login() {
             <button
               disabled={isInvalid}
               type="submit"
-              className={`bg-blue-medium text-white w-full rounded h-8 font-bold
+              className={`bg-blue-500 text-white w-full rounded h-8 font-bold
             ${isInvalid && 'opacity-50'}`}
             >
               Login
