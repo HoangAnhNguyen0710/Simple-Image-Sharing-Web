@@ -1,9 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import * as ROUTES from './constants/Routes';
 import { useDispatch } from 'react-redux';
 import { setUser } from './context/user';
 import useAuthListener from './hooks/use_auth_listener';
+import PageHeader from './layouts/header';
+import { PacmanLoader } from 'react-spinners';
 
 
 const Login = lazy(() => import('./pages/Login'));
@@ -19,10 +22,13 @@ function App() {
     dispatch(setUser(user));
   },[user]);
   return (
+    <Router>
     <div className="App">
-      {/* <header className="App-header"> */}
-      <Router>
-        <Suspense fallback={<p>Loading...</p>}>
+      <PageHeader/>
+      <div className='py-12'>
+
+      </div>
+        <Suspense fallback={<div className='w-full h-screen flex items-center justify-center'><PacmanLoader color='#36d7b7' speedMultiplier={2}/></div>}>
           <Routes>
             <Route path={ROUTES.LOGIN} element={<Login/>} />
             <Route path={ROUTES.SIGN_UP} element={<SignUp/>} />
@@ -31,9 +37,8 @@ function App() {
             {/* <Route component={NotFound} /> */}
           </Routes>
         </Suspense>
-      </Router>
-      {/* </header> */}
     </div>
+    </Router>
   );
 }
 

@@ -4,11 +4,12 @@ import { firebaseApp } from '../config/firebase' ;
 // import "firebase/auth";
 import * as ROUTES from '../constants/Routes';
 import useAuthListener from '../hooks/use_auth_listener';
+import { isEmailExist } from '../services/firebase';
 // import { doesUsernameExist } from '../services/firebase';
 
 export default function SignUp() {
   const navigate = useNavigate();
-  // const { firebase } = useContext(FirebaseContext); 
+
   const { user } = useAuthListener();
   const [username, setUsername] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
@@ -20,8 +21,8 @@ export default function SignUp() {
   const handleSignUp = async (event) => {
     event.preventDefault();
 
-    // const usernameExists = await doesUsernameExist(username);
-    // if (!usernameExists.length) {
+    const emailExists = await isEmailExist(emailAddress);
+    if (!emailExists.length) {
       try {
         const createdUserResult = await firebaseApp
           .auth()
@@ -45,21 +46,20 @@ export default function SignUp() {
             dateCreated: Date.now()
           });
 
-        return navigate.push(ROUTES.DASHBOARD);
+        return navigate(ROUTES.DASHBOARD);
       } catch (error) {
         setUsername('');
         setEmailAddress('');
         setPassword('');
         setError(error.message);
       }
-    // } 
-    // else {
-    //   setUsername('');
-    //   setFullName('');
-    //   setEmailAddress('');
-    //   setPassword('');
-    //   setError('That username is already taken, please try another.');
-    // }
+    } 
+    else {
+      setUsername('');
+      setEmailAddress('');
+      setPassword('');
+      setError('That email is already been taken, please try another one.');
+    }
   };
 
   useEffect(() => {
@@ -71,17 +71,9 @@ export default function SignUp() {
 
   return (
     <div className="container flex mx-auto max-w-screen-md items-center h-screen px-4 lg:px-0">
-      {/* <div className="hidden lg:flex w-full lg:w-3/5">
-        <img
-          src="/images/iphone-with-profile.jpg"
-          alt="iPhone with Instagram app"
-          className="object-scale-down"
-        />
-      </div> */}
       <div className="flex flex-col w-full lg:w-2/5 justify-center h-full max-w-md m-auto">
         <div className="flex flex-col items-center bg-white p-4 border border-gray-primary mb-4 rounded">
         <h1 className="flex justify-center w-full py-6 uppercase font-medium">
-            {/* <img src="/images/logo.png" alt="Instagram" className="mt-2 mb-4" /> */}
             Simple Image Sharing
           </h1>
 
