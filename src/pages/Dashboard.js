@@ -12,6 +12,16 @@ const Dashboard = () => {
     document.title = 'Dashboard - Simple Image Sharing';
     console.log(user);
   }, []);
+
+  const openImageUploader = () => {
+    if(!user) {
+      alert("Please login to use this function");
+    } 
+    else {
+      setOpenModal(true);
+    }
+  }
+
   return (
     <div className="">
       {/* {user ? (
@@ -24,7 +34,7 @@ const Dashboard = () => {
         </div>
       )} */}
       <div className="flex justify-center">
-        <Button variant="contained" onClick={()=>setOpenModal(true)}>Share an Image</Button>
+        <Button variant="contained" onClick={openImageUploader}>Share an Image</Button>
       </div>
       <div className="flex flex-wrap p-12 items-center justify-center">
       <div className="w-full lg:w-3/4 p-6 h-fit border-2">
