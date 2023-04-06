@@ -10,6 +10,7 @@ const ImageUploader = (props) => {
   const open = props.open;
   const setOpen = props.setOpen;
   const handleOpen = () => setOpen(true);
+
   const handleCloseModal = () => setOpen(false);
   const [currentFile, setCurrentFile] = React.useState(null);
   const [inputTitle, setInputTitle] = React.useState("");
@@ -17,6 +18,7 @@ const ImageUploader = (props) => {
   const [msg, setMSG] = React.useState("");
   const [messageType, setMessageType] = React.useState(null);
   const user = useSelector((state)=>state.user.value);
+
 
   const style = {
     position: "absolute",
@@ -50,7 +52,7 @@ const ImageUploader = (props) => {
     }
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
-  
+
   const handleSubmitForm = (e) => {
     e.preventDefault();
     const upload =FirebaseStorage.ref(`/images/${currentFile.file.name}`).put(currentFile.file);
@@ -170,6 +172,7 @@ const ImageUploader = (props) => {
         />
         <Button type="submit">Upload</Button>
         </form>
+
       </Box>
     </Modal>
   );
