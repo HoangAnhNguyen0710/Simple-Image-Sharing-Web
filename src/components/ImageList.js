@@ -5,14 +5,15 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 import { IconButton } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 
-export default function PageImageList() {
+export default function PageImageList(props) {
+  const items = props.list;
   return (
     <ImageList cols={3}>
-      {itemData.map((item) => (
-        <ImageListItem key={item.img} className='p-3'>
+      {items.map((item) => (
+        <ImageListItem key={item.docId} className='p-3'>
           <img
-            src={`${item.img}?w=248&fit=crop&auto=format`}
-            srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+            src={`${item.imageSrc}?w=248&fit=crop&auto=format`}
+            srcSet={`${item.imageSrc}?w=248&fit=crop&auto=format&dpr=2 2x`}
             alt={item.title}
             loading="lazy"
           />
