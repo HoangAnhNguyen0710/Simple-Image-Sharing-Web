@@ -1,5 +1,5 @@
 import { Alert, Box, Button, Card, CardMedia, Modal, Snackbar, TextField } from "@mui/material";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { FirebaseStorage, firebaseApp } from "../config/firebase";
 import { useDropzone } from "react-dropzone";
 import { useSelector } from "react-redux";
@@ -26,11 +26,12 @@ const ImageUploader = (props) => {
     left: "50%",
     transform: "translate(-50%, -50%)",
     maxWidth: 600,
+    maxHeight: "70%",
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,
     p: 4,
-    borderRadius: "10%"
+    overflow: "scroll"
   };
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
@@ -55,7 +56,7 @@ const ImageUploader = (props) => {
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
-    const upload =FirebaseStorage.ref(`/images/${currentFile.file.name}`).put(currentFile.file);
+    const upload =FirebaseStorage.ref(`/images/${user.uid}/${currentFile.file.name}`).put(currentFile.file);
     upload.on(
     "state_changed",
     snapshot => {},
@@ -72,7 +73,9 @@ const ImageUploader = (props) => {
           userId: user.uid,
           imageSrc: url,
           dateCreated: moment().format('LLLL'),
-          comments: [],
+          title: inputTitle,
+          description: inputDescription,
+          // comments: [],
           likes: [],
           docId: v4(),
           fileType: currentFile.file.type,
@@ -170,7 +173,7 @@ const ImageUploader = (props) => {
           rows={4}
           fullWidth
         />
-        <Button type="submit">Upload</Button>
+        <Button type="submit" variant="contained">Upload</Button>
         </form>
 
       </Box>

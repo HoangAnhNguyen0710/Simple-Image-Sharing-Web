@@ -7,3 +7,10 @@ export async function isEmailExist (email) {
                                    .get();
     return result.docs.map((user) => user.data().length > 0);
 }
+
+export async function getImagesList () {
+    const images = await firebaseApp.firestore()
+                                    .collection('images').orderBy("dateCreated")
+                                    .limit(16).get();
+    return images.docs.map((image) => image.data());
+}
