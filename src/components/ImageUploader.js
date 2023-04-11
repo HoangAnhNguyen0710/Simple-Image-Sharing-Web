@@ -71,6 +71,7 @@ const ImageUploader = (props) => {
         console.log(url)
         const postData = {
           userId: user.uid,
+          author: user.uid,
           imageSrc: url,
           dateCreated: moment().format('LLLL'),
           title: inputTitle,
