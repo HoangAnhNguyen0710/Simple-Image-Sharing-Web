@@ -19,7 +19,7 @@ export default function PageImageList(props) {
           />
           <ImageListItemBar
             title={item.title}
-            subtitle={item.author}
+            subtitle={item.userId}
             className='m-3'
             actionIcon={
               <IconButton
